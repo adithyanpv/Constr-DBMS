@@ -3,7 +3,9 @@ e_id serial primary key,
 e_name varchar(20) not null,
 designation varchar(100),
 salary numeric(10,2),
-manager_id int references employees(e_id)
+manager_id int references employees(e_id),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 create table site(
