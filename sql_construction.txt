@@ -1,0 +1,67 @@
+create table employees(
+e_id serial primary key,
+e_name varchar(20) not null,
+designation varchar(100),
+salary numeric(10,2),
+manager_id int references employees(e_id)
+);
+
+create table site(
+site_id serial primary key,
+location varchar(100),
+site_manager_id int references employees(e_id)
+);
+
+create table project(
+project_id serial primary key,
+project_name varchar(100),
+no_of_workers int,
+proj_manager_id int references employees(e_id)
+);
+
+CREATE TABLE Task (
+    task_id SERIAL PRIMARY KEY,
+    task_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    project_id INT REFERENCES Project(project_id),
+    assigned_date DATE,
+    due_date DATE,
+    status VARCHAR(50)
+);
+
+CREATE TABLE Attendance (
+    attendance_id SERIAL PRIMARY KEY,
+    e_id INT REFERENCES Employees(e_id),
+	project_id INT REFERENCES Project(project_id),
+    date DATE NOT NULL,
+    check_in_time TIME,
+    check_out_time TIME,
+    present BOOLEAN
+);
+CREATE TABLE EmployeeTask (
+    task_id INT REFERENCES Task(task_id),
+    e_id INT REFERENCES Employees(e_id),
+    assigned_date DATE,
+    role VARCHAR(100),
+    status VARCHAR(50),
+    PRIMARY KEY (task_id, e_id, assigned_date)
+);
+CREATE TABLE EmployeeProject (
+    e_id INT REFERENCES Employees(e_id),
+    project_id INT REFERENCES Project(project_id),
+    role VARCHAR(100),
+    joined_date DATE,
+    exit_date DATE,
+	assigned_date DATE,
+    PRIMARY KEY (e_id, project_id)
+);
+CREATE TABLE ProjectSite (
+    project_id INT REFERENCES Project(project_id),
+    site_id INT REFERENCES Site(site_id),
+    assigned_date DATE,
+    end_date DATE,
+    status VARCHAR(50),
+    PRIMARY KEY (project_id, site_id)
+);
+
+
