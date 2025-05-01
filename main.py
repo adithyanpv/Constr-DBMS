@@ -13,6 +13,7 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/")
 async def root():
     return {"message": "Construction Management App"}'''  
+''' working 
 from fastapi import FastAPI, HTTPException
 from models.employee import (
     create_employee, get_all_employees, get_employee_by_id,
@@ -91,7 +92,7 @@ async def delete_employee_endpoint(employee_id: int):
         return deleted_employee
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error.")
-
+'''
 '''
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
@@ -161,3 +162,23 @@ async def delete_employee_data(employee_id: int, db = Depends(get_db)):
     return {"message": "Employee deleted successfully."}
 
 '''
+# main.py
+
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from db import connect_to_db, disconnect_from_db
+from routers.employees import router as employee_router
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("▶️ Lifespan starting")
+    await connect_to_db()
+    print("✅ DB connected")
+    yield
+    await disconnect_from_db()
+    print("🛑 DB disconnected")
+
+app = FastAPI(lifespan=lifespan)
+
+# Include router
+app.include_router(employee_router)
