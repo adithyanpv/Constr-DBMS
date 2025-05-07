@@ -15,7 +15,7 @@ router = APIRouter(prefix="/employees", tags=["Employees"])
 @router.post("", response_model=EmployeeOut)
 async def create_employee_endpoint(employee: EmployeeCreate):
     try:
-        employee_data = employee.dict()
+        employee_data = employee.model_dump()
         new_employee = await create_employee(employee_data)
         return new_employee
     except asyncpg.PostgresError as e:
@@ -45,7 +45,7 @@ async def get_employee_by_id_endpoint(employee_id: int):
 @router.put("/{employee_id}", response_model=EmployeeOut)
 async def update_employee_endpoint(employee_id: int, employee: EmployeeCreate):
     try:
-        employee_data = employee.dict()
+        employee_data = employee.model_dump()
         updated_employee = await update_employee(employee_id, employee_data)
         if updated_employee is None:
             raise HTTPException(status_code=404, detail="Employee not found")
