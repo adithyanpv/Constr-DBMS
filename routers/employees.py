@@ -12,7 +12,7 @@ from schemas.employee import EmployeeCreate, EmployeeOut
 
 router = APIRouter(prefix="/employees", tags=["Employees"])
 
-@router.post("", response_model=EmployeeOut)
+@router.post("/", response_model=EmployeeOut)
 async def create_employee_endpoint(employee: EmployeeCreate):
     try:
         employee_data = employee.model_dump()
@@ -24,7 +24,7 @@ async def create_employee_endpoint(employee: EmployeeCreate):
         print(f"Error in create_employee_endpoint: {e}")
         raise HTTPException(status_code=500, detail="Internal server error.")
 
-@router.get("", response_model=List[EmployeeOut])
+@router.get("/", response_model=List[EmployeeOut])
 async def get_all_employees_endpoint():
     try:
         employees = await get_all_employees()
