@@ -168,7 +168,10 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from db import connect_to_db, disconnect_from_db
 from routers.employees import router as employee_router
-
+from routers.project import router as project_router
+from routers.site import router as site_router
+from routers.task import router as task_router
+from routers.attendance import router as attendance_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("▶️ Lifespan starting")
@@ -182,3 +185,7 @@ app = FastAPI(lifespan=lifespan)
 
 # Include router
 app.include_router(employee_router)
+app.include_router(project_router)
+app.include_router(site_router)
+app.include_router(task_router)
+app.include_router(attendance_router)
